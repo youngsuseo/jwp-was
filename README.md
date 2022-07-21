@@ -11,12 +11,10 @@
 ## 기능 요구사항
 * HTTP 요청과 응답을 파싱해 원하는 값을 가져올 수 있는 API 제공
 1. GET 요청
-    1-1. 요청사항을 한줄씩 읽어 첫번째 줄에 있는 RequestLine을 찾는다.
-    1-2. RequestLine을 파싱하여 method, path, protocolInfomation, version 을 추출한다. (protocolInfomation, version은 하나의 클래스로)
-    1-3. class 분리를 통해 인스턴스 변수 별 유효성 검사를 진행한다.
-    1-4. Http method인 GET, POST를 enum으로 구현한다. 
-2. POST 요청 : GET 요청과 마찬가지로 RequestLine을 찾고 파싱하여 데이터를 추출한다.
+    1-1. RequestLine을 파싱하여 method, pathInformation, protocolInfomation, version 을 추출한다. (protocolInfomation, version은 하나의 클래스로)
+    1-2. class 분리를 통해 인스턴스 변수 별 유효성 검사를 진행한다.
+    1-3. Http method인 GET, POST를 enum으로 구현한다. 
+2. POST 요청 : GET 요청과 마찬가지로 RequestLine 파싱하여 데이터를 추출한다.
 3. Query String 파싱
-    3-1. RequestLine을 찾는다.
-    3-2. RequestLine을 파싱하여 데이터를 추출한다.
-    3-3. path 클래스에 Query String 인스턴스 변수를 추가해 데이터를 파싱한다.
+    3-1. RequestLine을 파싱하여 데이터를 추출한다.
+    3-2. pathInformation 클래스에 Query String 인스턴스 변수를 추가해 데이터를 파싱한다.

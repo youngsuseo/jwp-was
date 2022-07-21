@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProtocolTest {
+class ProtocolTest {
 
     @DisplayName("Protocol 객체를 생성한다.")
     @Test

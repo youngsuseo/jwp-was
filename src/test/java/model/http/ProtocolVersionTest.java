@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ProtocolVersionTest {
+class ProtocolVersionTest {
 
     @DisplayName("protocol은 protocol과 version으로 구성됩니다.")
     @Test

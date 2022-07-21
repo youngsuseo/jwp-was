@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-public class MethodTest {
+class MethodTest {
 
     @DisplayName("RequestLine의 메소드 문자열을 입력하면 해당 Enum 값이 출력된다. ")
     @Test

@@ -1,12 +1,12 @@
-package model.http;
+package webserver.http.model;
 
 import java.util.Objects;
 
-public class QueryStringKey {
-    private final String key;
+public class Path {
+    private String path;
 
-    public QueryStringKey(String key) {
-        this.key = key;
+    public Path(String path) {
+        this.path = path;
     }
 
     @Override
@@ -17,12 +17,12 @@ public class QueryStringKey {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        QueryStringKey that = (QueryStringKey) o;
-        return Objects.equals(key, that.key);
+        Path path1 = (Path) o;
+        return Objects.equals(path, path1.path);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key);
+        return Objects.hash(path);
     }
 }

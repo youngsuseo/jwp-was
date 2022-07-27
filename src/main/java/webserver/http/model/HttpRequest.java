@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public class HttpRequest {
     public static final String TEMPLATE_PATH = "./templates";
+    public static final String STATIC_PATH = "./static";
     private RequestLine requestLine;
     private List<String> requestHeaders;
     private String requestBody;
@@ -33,6 +34,9 @@ public class HttpRequest {
             case "html" :
             case "ico" :
                 return TEMPLATE_PATH + path;
+            case "js" :
+            case "css" :
+                return STATIC_PATH + path;
             default: return path;
         }
     }

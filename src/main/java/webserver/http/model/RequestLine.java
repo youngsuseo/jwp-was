@@ -2,14 +2,16 @@ package webserver.http.model;
 
 import exception.IllegalHttpRequestException;
 
-public class Http {
+import java.util.Objects;
+
+public class RequestLine {
     private static final int VALID_REQUEST_LINE_LENGTH = 3;
 
     private Method method;
     private PathInformation pathInformation;
     private ProtocolVersion protocolVersion;
 
-    public Http(String requestLine) {
+    public RequestLine(String requestLine) {
         String[] requestData = requestLine.split(" ");
 
         if (requestData.length != VALID_REQUEST_LINE_LENGTH) {
@@ -19,6 +21,10 @@ public class Http {
         this.method = Method.of(requestData[0]);
         this.pathInformation = new PathInformation(requestData[1]);
         this.protocolVersion = new ProtocolVersion(requestData[2]);
+    }
+
+    public String path() {
+        return pathInformation.path();
     }
 
     public Method getMethod() {
@@ -31,5 +37,18 @@ public class Http {
 
     public ProtocolVersion getProtocol() {
         return protocolVersion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RequestLine that = (RequestLine) o;
+        return method == that.method && Objects.equals(pathInformation, that.pathInformation) && Objects.equals(protocolVersion, that.protocolVersion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(method, pathInformation, protocolVersion);
     }
 }

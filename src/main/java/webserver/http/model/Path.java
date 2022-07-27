@@ -9,6 +9,10 @@ public class Path {
         this.path = path;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -9,6 +9,10 @@ public class Path {
         this.path = path;
     }
 
+    public boolean isResource() {
+        return path.split("\\.").length > 1;
+    }
+
     public String getPath() {
         return path;
     }

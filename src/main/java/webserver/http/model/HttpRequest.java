@@ -27,17 +27,24 @@ public class HttpRequest {
 
     public String responseViewPath() {
         String path = requestLine.path();
-        String[] split = path.split("\\.");
-        String extension = split[split.length - 1];
-
-        switch (extension) {
-            case "html" :
-            case "ico" :
-                return TEMPLATE_PATH + path;
-            case "js" :
-            case "css" :
-                return STATIC_PATH + path;
-            default: return path;
-        }
+        return path;
+//        String[] split = path.split("\\.");
+//
+//        if (split.length < 2) {
+//            return path;
+//        }
+//
+//        String extension = split[split.length - 1];
+//
+//        // FIXME s enum 으로 변경 -> 이동 해야한다. 클래스 분리
+//        switch (extension) {
+//            case "html" :
+//            case "ico" :
+//                return TEMPLATE_PATH + path;
+//            case "js" :
+//            case "css" :
+//                return STATIC_PATH + path;
+//            default: return path;
+//        }
     }
 }

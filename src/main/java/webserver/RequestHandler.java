@@ -36,9 +36,10 @@ public class RequestHandler implements Runnable {
                 }
             } while (!"".equals(line));
             HttpRequest httpRequest = new HttpRequest(stringBuilder.toString());
+            String filePath = httpRequest.responseViewPath();
 
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = FileIoUtils.loadFileFromClasspath(httpRequest.responseViewPath());
+            byte[] body = FileIoUtils.loadFileFromClasspath(filePath);
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException | URISyntaxException e) {

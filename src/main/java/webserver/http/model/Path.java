@@ -13,6 +13,15 @@ public class Path {
         return path.split("\\.").length > 1;
     }
 
+    public String resource() {
+        if (!isResource()) {
+            return path;
+        }
+        String[] splitPath = path.split("\\.");
+        String extension = splitPath[splitPath.length - 1];
+        return Extension.parentPath(extension) + path;
+    }
+
     public String getPath() {
         return path;
     }

@@ -36,7 +36,7 @@ public class RequestHandler implements Runnable {
                 }
             } while (!"".equals(line));
             HttpRequest httpRequest = new HttpRequest(stringBuilder.toString());
-            String filePath = httpRequest.responseViewPath();
+            String filePath = httpRequest.responsePath();
 
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = FileIoUtils.loadFileFromClasspath(filePath);

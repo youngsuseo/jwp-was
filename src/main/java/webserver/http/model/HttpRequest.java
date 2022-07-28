@@ -17,15 +17,19 @@ public class HttpRequest {
         requestHeaders = Arrays.stream(lines).filter(line -> !line.equals(lines[0])).collect(Collectors.toList());
     }
 
+    public boolean isResource() {
+        return requestLine.isResource();
+    }
+
+    public String responsePath() {
+        return requestLine.fullPath();
+    }
+
     public RequestLine getRequestLine() {
         return requestLine;
     }
 
     public List<String> getRequestHeaders() {
         return requestHeaders;
-    }
-
-    public String responsePath() {
-        return requestLine.fullPath();
     }
 }

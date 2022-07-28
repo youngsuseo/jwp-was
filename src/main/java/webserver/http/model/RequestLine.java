@@ -23,6 +23,10 @@ public class RequestLine {
         this.protocolVersion = new ProtocolVersion(requestData[2]);
     }
 
+    public boolean isResource() {
+        return pathInformation.isResource();
+    }
+
     public String fullPath() {
         return pathInformation.fullPath();
     }

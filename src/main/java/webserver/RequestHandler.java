@@ -36,6 +36,10 @@ public class RequestHandler implements Runnable {
                 }
             } while (!"".equals(line));
             HttpRequest httpRequest = new HttpRequest(stringBuilder.toString());
+            if (!httpRequest.isResource()) {
+
+            }
+
             String filePath = httpRequest.responsePath();
 
             DataOutputStream dos = new DataOutputStream(out);

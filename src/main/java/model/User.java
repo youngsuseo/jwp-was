@@ -1,6 +1,5 @@
 package model;
 
-import webserver.http.model.QueryString;
 import webserver.http.model.QueryStrings;
 
 public class User {
@@ -10,9 +9,8 @@ public class User {
     private String email;
 
     public User(QueryStrings queryStrings) {
-        for (QueryString queryString : queryStrings.getQueryStringList()) {
-            // FIXME s 이 부분 수정 필요
-        }
+        this(queryStrings.queryStringValue("userId"), queryStrings.queryStringValue("password"),
+             queryStrings.queryStringValue("name"), queryStrings.queryStringValue("email"));
     }
 
     public User(String userId, String password, String name, String email) {

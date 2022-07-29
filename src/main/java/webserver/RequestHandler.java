@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.FileIoUtils;
@@ -36,8 +37,10 @@ public class RequestHandler implements Runnable {
                 }
             } while (!"".equals(line));
             HttpRequest httpRequest = new HttpRequest(stringBuilder.toString());
-            if (!httpRequest.isResource()) {
-
+            // FIXME 디미터 법칙 고려
+            if ("/user/create".equals(httpRequest.getRequestLine().getPathInformation().getPath().getPath())) {
+                User user = new User(httpRequest.getRequestLine().getPathInformation().getQueryStrings());
+                System.out.println("user = " + user);
             }
 
             String filePath = httpRequest.responsePath();

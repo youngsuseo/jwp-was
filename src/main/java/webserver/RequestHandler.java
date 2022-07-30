@@ -52,10 +52,11 @@ public class RequestHandler implements Runnable {
             HttpRequest httpRequest = new HttpRequest(requestLine, requestHeaders, requestBody);
 
             DataOutputStream dos = new DataOutputStream(out);
+            byte[] body;
             // FIXME if-else 분기 말고 다른 방식 고려
             if (httpRequest.isResource()) {
                 String filePath = httpRequest.responsePath();
-                byte[] body = FileIoUtils.loadFileFromClasspath(filePath);
+                body = FileIoUtils.loadFileFromClasspath(filePath);
                 response200Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
                 responseBody(dos, body); // 읽어온 페이지를 전달한다.
             } else {
@@ -69,8 +70,8 @@ public class RequestHandler implements Runnable {
                     User user = new User(httpRequest.getRequestBody());
                     System.out.println("user = " + user);
                 }
-                // FIXME body.length 위치에 들어갈 값 확인
-                response200Header(dos, 0); // 200 의 Response Header, 하위 내용들을 생성한다.
+                body = FileIoUtils.loadFileFromClasspath("./templates/index.html");
+                response302Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
             }
         } catch (IOException | URISyntaxException e) {
             logger.error(e.getMessage());
@@ -82,6 +83,16 @@ public class RequestHandler implements Runnable {
             dos.writeBytes("HTTP/1.1 200 OK \r\n"); // Status Code
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n"); // Response Header
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n"); // Response Header
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    private void response302Header(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n"); // Status Code
+            dos.writeBytes("Location: /index.html \r\n"); // Status Code
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             logger.error(e.getMessage());

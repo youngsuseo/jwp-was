@@ -30,7 +30,13 @@
     2-1. Request Header 를 호출하여, 응답을 User 클래스에 담는다.
 3. POST 방식 요청으로 회원가입을 한다.
     3-1. HTTP Body를 가져와 User 클래스에 담는다.
+    -> 개발하면서 bufferedReader로 읽은 정보를 bufferedReader.readLine()을 통해 한번에 읽어와서 그 String 값을 HttpRequest에 전달해주려고했는데,
+    requestBody를 얻기 위해서는 빈 줄이 한개 있는데 이것이 처리가 안되었다.
+    그래서 bufferedReader.read() 를 통해 뒤에것을 받아 올수있는데 byte[]의 크기가 필요해서 이건 content-type에서 가져올 수 있어
+    이 부분은 어쩔수 없이 requestLine, requestHeader, requestBody 를 각각 따로 받아서 HttpRequest를 생성하도록 했다.
 4. 회원 가입 이후에 index.html 페이지로 이동 시킨다.
+    -> redirect는 forward 하는 것이 아니라 페이지를 이동시켜야 했다. 그래서 socket 연결을 끊고 다시 요청하거나, thread를 다시 호출하려고 했는데 안되었고,
+    응답으로 전달해주는 responseHeader 정보에 redirect 정보를 추가하여 가능하게 했다. -> 실질적으로 Redirect 동작
 5. 로그인 성공시 index.html, 실패시 login_failed.html로 이동한다. 로그인 성공시 cookie를 활용해 로그인 상태 유지
     5-1. 로그인 성공시 cookie header 값을 logined=true, 실패시 logined=false 로 전달
     5-2. cookie는 정상적으로 로그인 되었을 경우, 앞 단계에서 회원가입한 데이터를 유지해야 한다.

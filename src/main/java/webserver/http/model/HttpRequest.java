@@ -8,13 +8,19 @@ public class HttpRequest {
     public static final String TEMPLATE_PATH = "./templates";
     public static final String STATIC_PATH = "./static";
     private RequestLine requestLine;
-    private List<String> requestHeaders;
-    private String requestBody;
+    private RequestHeaders requestHeaders;
+    private RequestBody requestBody;
 
-    public HttpRequest(String httpRequestData) {
-        String[] lines = httpRequestData.split("\n");
-        requestLine = new RequestLine(lines[0]);
-        requestHeaders = Arrays.stream(lines).filter(line -> !line.equals(lines[0])).collect(Collectors.toList());
+//    public HttpRequest(String httpRequestData) {
+//        String[] lines = httpRequestData.split("\n");
+//        requestLine = new RequestLine(lines[0]);
+//        requestHeaders = Arrays.stream(lines).filter(line -> !line.equals(lines[0])).collect(Collectors.toList());
+//    }
+
+    public HttpRequest(RequestLine requestLine, RequestHeaders requestHeaders, RequestBody requestBody) {
+        this.requestLine = requestLine;
+        this.requestHeaders = requestHeaders;
+        this.requestBody = requestBody;
     }
 
     public boolean isResource() {
@@ -29,7 +35,11 @@ public class HttpRequest {
         return requestLine;
     }
 
-    public List<String> getRequestHeaders() {
+    public RequestHeaders getRequestHeaders() {
         return requestHeaders;
+    }
+
+    public RequestBody getRequestBody() {
+        return requestBody;
     }
 }

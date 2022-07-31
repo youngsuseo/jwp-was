@@ -17,9 +17,7 @@ public class Path {
         if (!isResource()) {
             return path;
         }
-        String[] splitPath = path.split("\\.");
-        String extension = splitPath[splitPath.length - 1];
-        return Extension.parentPath(extension) + path;
+        return Extension.fullPath(path);
     }
 
     public String getPath() {

@@ -1,10 +1,9 @@
 package webserver.http.controller;
 
+import cookie.Cookie;
 import db.DataBase;
 import model.User;
 import webserver.http.model.HttpRequest;
-
-import javax.servlet.http.Cookie;
 
 public class UserController {
 
@@ -32,13 +31,17 @@ public class UserController {
 
         // 로그인 성공
         // 로그인 성공시 cookie header 값이 logined=true
+        Cookie cookie = new Cookie();
         if (user.getPassword().equals(password)) {
+            cookie.setResponseLoginCookie(true);
+
             return "/index.html";
         } else {
             // 로그인 실패
             // 로그인 실패시 cookie header 값이 logined=false
+            cookie.setResponseLoginCookie(false);
 
-            return "/user/login_fail.html";
+            return "/user/login_failed.html";
         }
 
 

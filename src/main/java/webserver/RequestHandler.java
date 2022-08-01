@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
+import cookie.Cookie;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,9 @@ public class RequestHandler implements Runnable {
             dos.writeBytes("HTTP/1.1 200 OK \r\n"); // Status Code
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n"); // Response Header
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n"); // Response Header
+            if (Cookie.exists()) {
+                dos.writeBytes(Cookie.getResponseCookie() + "\r\n");
+            }
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             logger.error(e.getMessage());

@@ -6,8 +6,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 public enum HandlerAdapter {
-    CREATE_USER_GET(Method.GET, "/user/create", new UserController(), "createUserGet"),
+    CREATE_USER_GET(Method.GET, "/user/create", new UserController(), "createUserGet"), // FIXME new 생성자 대신 싱글턴 패턴으로 가능한지 확인
     CREATE_USER_POST(Method.POST, "/user/create", new UserController(), "createUserPost"),
+    LOGIN(Method.POST, "/user/login", new UserController(), "login"),
     INDEX(Method.GET, "/index.html", new UserController(), "index"); // FIXME 없는 메서드
 
     private Method httpMethod;

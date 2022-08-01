@@ -36,8 +36,7 @@ public class RequestHandler implements Runnable {
             byte[] body;
             // FIXME if-else 분기 말고 다른 방식 고려
             if (httpRequest.isResource()) {
-                String filePath = httpRequest.responsePath();
-                body = FileIoUtils.loadFileFromClasspath(filePath);
+                body = FileIoUtils.loadFileFromClasspath(httpRequest.responsePath());
                 response200Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
                 responseBody(dos, body); // 읽어온 페이지를 전달한다.
             } else {

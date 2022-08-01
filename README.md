@@ -45,5 +45,6 @@
 6. 사용자가 로그인 상태라면 사용자 목록 페이지 이동, 로그인 하지 않은 상태라면 로그인 페이지로 이동
     6-1. classPath에 있는 template 파일을 읽어 동적으로 html 생성
     6-2. handlebars 라이브러리를 사용해서 User 객체를 동적으로 html 생성해서 전달한다.
+    -> RequestHanlder 에서 filter 메서드를 구현하고 분리를 한다.
 7. StyleSheet 파일 지원
     7-1. style.css 파일을 응답으로 전달 할 수 있도록 구현

@@ -1,16 +1,9 @@
 package webserver.http.model;
 
-import utils.IOUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class HttpRequest {
-    public static final String TEMPLATE_PATH = "./templates";
-    public static final String STATIC_PATH = "./static";
     private RequestLine requestLine;
     private RequestHeaders requestHeaders;
     private RequestBody requestBody;

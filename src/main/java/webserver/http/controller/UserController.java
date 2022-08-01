@@ -5,6 +5,8 @@ import db.DataBase;
 import model.User;
 import webserver.http.model.HttpRequest;
 
+import java.util.Collection;
+
 public class UserController {
 
     public String index(HttpRequest httpRequest) {
@@ -28,22 +30,20 @@ public class UserController {
         String userId = httpRequest.getRequestBody().getRequestBodyMap().get("userId");
         String password = httpRequest.getRequestBody().getRequestBodyMap().get("password");
         User user = DataBase.findUserById(userId);
+        return pathAfterLogin(password, user);
+    }
 
-        // 로그인 성공
-        // 로그인 성공시 cookie header 값이 logined=true
+    private String pathAfterLogin(String password, User user) {
         Cookie cookie = new Cookie();
         if (user.getPassword().equals(password)) {
             cookie.setResponseLoginCookie(true);
-
             return "/index.html";
-        } else {
-            // 로그인 실패
-            // 로그인 실패시 cookie header 값이 logined=false
-            cookie.setResponseLoginCookie(false);
-
-            return "/user/login_failed.html";
         }
+        cookie.setResponseLoginCookie(false);
+        return "/user/login_failed.html";
+    }
 
-
+    public Collection<User> retrieveUsers(HttpRequest httpRequest) {
+        return DataBase.findAll();
     }
 }

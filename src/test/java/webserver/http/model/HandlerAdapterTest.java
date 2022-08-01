@@ -28,4 +28,18 @@ class HandlerAdapterTest {
 
         assertThat(HandlerAdapter.handlerMapping(httpRequest)).isEqualTo("/index.html");
     }
+
+    @Test
+    void accessiblePagesAfterLogin() {
+        RequestLine requestLine = new RequestLine("POST /user/create HTTP/1.1\n");
+        HttpRequest httpRequest = new HttpRequest(requestLine, null, null);
+        assertThat(HandlerAdapter.accessiblePagesAfterLogin(httpRequest)).isFalse();
+    }
+
+    @Test
+    void accessiblePagesAfterLogin_false() {
+        RequestLine requestLine = new RequestLine("GET /user/list HTTP/1.1\n");
+        HttpRequest httpRequest = new HttpRequest(requestLine, null, null);
+        assertThat(HandlerAdapter.accessiblePagesAfterLogin(httpRequest)).isTrue();
+    }
 }

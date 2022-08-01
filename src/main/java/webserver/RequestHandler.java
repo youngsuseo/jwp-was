@@ -1,18 +1,20 @@
 package webserver;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.HashMap;
 
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Template;
 import cookie.Cookie;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.FileIoUtils;
 import utils.IOUtils;
-import webserver.http.controller.UserController;
 import webserver.http.model.*;
 
 public class RequestHandler implements Runnable {
@@ -41,9 +43,30 @@ public class RequestHandler implements Runnable {
                 response200Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
                 responseBody(dos, body); // 읽어온 페이지를 전달한다.
             } else {
-                String handlerMappingPath = HandlerAdapter.handlerMapping(httpRequest);
-                body = FileIoUtils.loadFileFromClasspath(handlerMappingPath);
-                response302Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
+                if (HandlerAdapter.accessiblePagesAfterLogin(httpRequest)
+                        && !"logined=true".equals(httpRequest.getRequestHeaders().getRequestHeadersMap().get("Cookie"))) { // FIXME filter 역할이긴한데, if-else 말고 다른식으로
+                    response302Header(dos, "/user/login.html");
+                } else {
+                    Object handlerMapping = HandlerAdapter.handlerMapping(httpRequest);
+                    if (handlerMapping instanceof String) {
+                        response302Header(dos, String.valueOf(handlerMapping)); // 200 의 Response Header, 하위 내용들을 생성한다.
+                    } else {
+                        if (handlerMapping instanceof Collection) {
+                            Collection<User> users = (Collection<User>) handlerMapping;
+
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                            objectOutputStream.writeObject(users);
+                            body = byteArrayOutputStream.toByteArray();
+
+                            response200Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
+                            responseBody(dos, body); // 읽어온 페이지를 전달한다.
+                        }
+
+                        System.out.println("handlerMapping = " + handlerMapping);
+                        // 객체를 해당 타입으로 변환한 이후 return
+                    }
+                }
             }
         } catch (IOException | URISyntaxException e) {
             logger.error(e.getMessage());
@@ -64,10 +87,26 @@ public class RequestHandler implements Runnable {
         }
     }
 
-    private void response302Header(DataOutputStream dos, int lengthOfBodyContent) {
+    private void response302Header(DataOutputStream dos, String redirectPath) {
         try {
             dos.writeBytes("HTTP/1.1 302 Found \r\n"); // Status Code
-            dos.writeBytes("Location: /index.html \r\n"); // Status Code
+            dos.writeBytes("Location: " + redirectPath + " \r\n"); // Status Code
+            if (Cookie.exists()) {
+                dos.writeBytes(Cookie.getResponseCookie() + "\r\n");
+            }
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    private void response302HeaderToLogin(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n"); // Status Code
+            dos.writeBytes("Location: /user/login.html \r\n"); // Status Code
+            if (Cookie.exists()) {
+                dos.writeBytes(Cookie.getResponseCookie() + "\r\n");
+            }
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             logger.error(e.getMessage());

@@ -43,6 +43,12 @@ public class RequestHandler implements Runnable {
             byte[] body;
             // FIXME if-else 분기 말고 다른 방식 고려
             if (httpRequest.isResource()) {
+                if (httpRequest.getRequestLine().getPathInformation().getPath().getPath().endsWith(".css")) {
+                    body = FileIoUtils.loadFileFromClasspath(httpRequest.responsePath());
+                    response200CssHeader(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
+                    responseBody(dos, body); // 읽어온 페이지를 전달한다.
+                    return;
+                }
                 body = FileIoUtils.loadFileFromClasspath(httpRequest.responsePath());
                 response200Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
                 responseBody(dos, body); // 읽어온 페이지를 전달한다.
@@ -99,6 +105,20 @@ public class RequestHandler implements Runnable {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n"); // Status Code
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n"); // Response Header
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n"); // Response Header
+            if (Cookie.exists()) {
+                dos.writeBytes(Cookie.getResponseCookie() + "\r\n");
+            }
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    private void response200CssHeader(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n"); // Status Code
+            dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n"); // Response Header
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n"); // Response Header
             if (Cookie.exists()) {
                 dos.writeBytes(Cookie.getResponseCookie() + "\r\n");

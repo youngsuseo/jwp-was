@@ -6,9 +6,13 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
+import com.github.jknack.handlebars.io.TemplateLoader;
 import cookie.Cookie;
 import model.User;
 import org.slf4j.Logger;
@@ -46,6 +50,24 @@ public class RequestHandler implements Runnable {
                 if (HandlerAdapter.accessiblePagesAfterLogin(httpRequest)
                         && !"logined=true".equals(httpRequest.getRequestHeaders().getRequestHeadersMap().get("Cookie"))) { // FIXME filter 역할이긴한데, if-else 말고 다른식으로
                     response302Header(dos, "/user/login.html");
+                } else if (HandlerAdapter.accessiblePagesAfterLogin(httpRequest)
+                        && "logined=true".equals(httpRequest.getRequestHeaders().getRequestHeadersMap().get("Cookie"))) {
+
+                    TemplateLoader loader = new ClassPathTemplateLoader();
+                    loader.setPrefix("/templates");
+                    loader.setSuffix(".html");
+                    Handlebars handlebars = new Handlebars(loader);
+
+                    Template template = handlebars.compile("user/list");
+
+                    User user = new User("javajigi", "password", "자바지기", "javajigi@gmail.com");
+                    Map<String, User> map = new LinkedHashMap<>();
+                    map.put("user", user);
+
+                    String profilePage = template.apply(map);
+                    body = profilePage.getBytes(StandardCharsets.UTF_8);
+                    response200Header(dos, body.length); // 200 의 Response Header, 하위 내용들을 생성한다.
+                    responseBody(dos, body); // 읽어온 페이지를 전달한다.
                 } else {
                     Object handlerMapping = HandlerAdapter.handlerMapping(httpRequest);
                     if (handlerMapping instanceof String) {

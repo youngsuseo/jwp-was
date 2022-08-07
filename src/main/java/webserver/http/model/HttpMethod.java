@@ -2,11 +2,11 @@ package webserver.http.model;
 
 import java.util.Locale;
 
-public enum Method {
+public enum HttpMethod {
     GET,
     POST;
 
-    public static Method of(String methodName) {
+    public static HttpMethod of(String methodName) {
         return valueOf(methodName);
     }
 
@@ -14,7 +14,7 @@ public enum Method {
         return POST == valueOf(methodName.toUpperCase(Locale.ROOT));
     }
 
-    public static boolean isPost(Method method) {
-        return POST == method;
+    public static boolean isPost(HttpMethod httpMethod) {
+        return POST == httpMethod;
     }
 }

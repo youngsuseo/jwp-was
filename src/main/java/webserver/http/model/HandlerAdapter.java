@@ -6,19 +6,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 public enum HandlerAdapter {
-    CREATE_USER_GET(Method.GET, "/user/create", UserController.of(), "createUserGet", false),
-    CREATE_USER_POST(Method.POST, "/user/create", UserController.of(), "createUserPost", false),
-    LOGIN(Method.POST, "/user/login", UserController.of(), "login", false),
-    USER_LIST(Method.GET, "/user/list", UserController.of(), "retrieveUsers", true),
-    INDEX(Method.GET, "/index.html", UserController.of(), "index", false);
+    CREATE_USER_GET(HttpMethod.GET, "/user/create", UserController.of(), "createUserGet", false),
+    CREATE_USER_POST(HttpMethod.POST, "/user/create", UserController.of(), "createUserPost", false),
+    LOGIN(HttpMethod.POST, "/user/login", UserController.of(), "login", false),
+    USER_LIST(HttpMethod.GET, "/user/list", UserController.of(), "retrieveUsers", true),
+    INDEX(HttpMethod.GET, "/index.html", UserController.of(), "index", false);
 
-    private Method httpMethod;
+    private HttpMethod httpMethod;
     private String path;
     private Object classObject;
     private String methodName;
     private boolean accessibleAfterLogin;
 
-    HandlerAdapter(Method httpMethod, String path, Object classObject, String methodName, boolean accessibleAfterLogin) {
+    HandlerAdapter(HttpMethod httpMethod, String path, Object classObject, String methodName, boolean accessibleAfterLogin) {
         this.httpMethod = httpMethod;
         this.path = path;
         this.classObject = classObject;
@@ -28,7 +28,7 @@ public enum HandlerAdapter {
 
     public static Object handlerMapping(HttpRequest httpRequest) {
         HandlerAdapter handlerAdapter = Arrays.stream(values()).filter(handlerAdapterEnum -> handlerAdapterEnum.httpMethod == httpRequest.getRequestLine().getMethod())
-                .filter(handlerAdapterEnum -> handlerAdapterEnum.path.equals(httpRequest.path()))
+                .filter(handlerAdapterEnum -> handlerAdapterEnum.path.equals(httpRequest.getPath()))
                 .findFirst().orElse(HandlerAdapter.INDEX);
 
         Object instance = handlerAdapter.classObject;
@@ -43,7 +43,7 @@ public enum HandlerAdapter {
 
     public static boolean accessiblePagesAfterLogin(HttpRequest httpRequest) {
         return Arrays.stream(values()).filter(handlerAdapterEnum -> handlerAdapterEnum.httpMethod == httpRequest.getRequestLine().getMethod())
-                .filter(handlerAdapterEnum -> handlerAdapterEnum.path.equals(httpRequest.path()))
+                .filter(handlerAdapterEnum -> handlerAdapterEnum.path.equals(httpRequest.getPath()))
                 .map(handlerAdapterEnum -> handlerAdapterEnum.accessibleAfterLogin).findFirst().orElse(true);
     }
 }

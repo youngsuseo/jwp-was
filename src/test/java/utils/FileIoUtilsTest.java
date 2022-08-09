@@ -12,4 +12,10 @@ public class FileIoUtilsTest {
         byte[] body = FileIoUtils.loadFileFromClasspath("./templates/index.html");
         log.debug("file : {}", new String(body));
     }
+
+    @Test
+    void loadFileFromClasspath_css() throws Exception {
+        byte[] body = FileIoUtils.loadFileFromClasspath("./static/css/bootstrap.min.css");
+        log.debug("file : {}", new String(body));
+    }
 }

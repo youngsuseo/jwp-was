@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HttpRequestTest {
     @Test
-    void request_resttemplate() {
+    void request_restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

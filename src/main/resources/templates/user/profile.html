@@ -39,7 +39,7 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="../user/list.html"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a href="../user/list.html"><i class="glyphicon glyphicon-user">user list</i></a></li>
             </ul>
         </div>
     </div>
@@ -85,6 +85,13 @@
                         </a>
                         <div class="media-body">
                             <h4 class="media-heading">자바지기</h4>
+
+                            {{#user}}
+                                <h1>{{userId}}</h1>
+                                <h1>{{password}}</h1>
+                                <h1>{{name}}</h1>
+                                <h1>{{email}}</h1>
+                            {{/user}}
                             <p>
                                 <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;javajigi@slipp.net</a>
                             </p>

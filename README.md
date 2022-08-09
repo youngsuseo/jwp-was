@@ -71,3 +71,9 @@
 2. sessionId를 생성한다.
 3. Map<String, HttpSession> 같은 자료구조로 구현한다.
 4. 세션은 클라이언트와 서버 간의 상태 값을 공유하기 위해 고유한 아이디를 활용하고, 이 고유한 아이디는 쿠키를 활용해 공유한다.
+
+## step5 기능 요구사항
+* Thread Pool 적용 : WAS에 Thread Pool을 적용해 안정적인 서비스가 가능하도록 한다.
+1. Java에서 기본으로 제공하는 ThreadPoolExecutor를 활용해 ThreadPool 기능을 추가한다.
+   최대 ThreadPool 크기는 250, 모든 Thread가 사용 중인 상태이면 100명까지 대기 상태가 되도록 구현한다.
+2. RestTemplate를 활용해 서버의 ThreadPool 수보다 많은 요청을 동시에 보내본다. 

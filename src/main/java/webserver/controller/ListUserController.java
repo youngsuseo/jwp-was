@@ -1,9 +1,9 @@
 package webserver.controller;
 
 import db.DataBase;
-import webserver.http.model.Model;
 import webserver.http.model.request.HttpRequest;
 import webserver.http.model.response.HttpResponse;
+import webserver.http.model.response.Model;
 
 import java.io.IOException;
 import java.util.HashMap;

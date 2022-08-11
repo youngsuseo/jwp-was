@@ -7,7 +7,6 @@ import com.github.jknack.handlebars.io.TemplateLoader;
 import cookie.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.http.model.Model;
 import webserver.http.model.request.Extension;
 import webserver.http.model.request.HttpRequest;
 

@@ -4,11 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.net.URISyntaxException;
 import webserver.controller.Controller;
-import webserver.http.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.FileIoUtils;
-import webserver.http.model.request.Extension;
+import webserver.controller.HandlerMapping;
 import webserver.http.model.request.HttpRequest;
 import webserver.http.model.response.HttpResponse;
 

@@ -1,9 +1,4 @@
-package webserver.http.model;
-
-import webserver.controller.Controller;
-import webserver.controller.CreateUserController;
-import webserver.controller.ListUserController;
-import webserver.controller.LoginController;
+package webserver.controller;
 
 import java.util.Collections;
 import java.util.HashMap;

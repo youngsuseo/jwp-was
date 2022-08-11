@@ -23,4 +23,8 @@ public class HttpSessions {
     public Map<String, HttpSession> getHttpSessionMap() {
         return httpSessionMap;
     }
+
+    public void setSingleHttpSession(HttpSession httpSession) {
+        this.httpSessionMap.put(httpSession.getId(), httpSession);
+    }
 }

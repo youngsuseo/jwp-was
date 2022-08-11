@@ -3,6 +3,8 @@ package webserver.controller;
 import cookie.Cookie;
 import db.DataBase;
 import model.User;
+import webserver.http.model.httpSession.HttpSession;
+import webserver.http.model.httpSession.HttpSessions;
 import webserver.http.model.request.HttpRequest;
 import webserver.http.model.response.HttpResponse;
 
@@ -21,11 +23,17 @@ public class LoginController extends AbstractController {
 
     private String pathAfterLogin(String password, User user) {
         Cookie cookie = new Cookie();
+        HttpSessions httpSessions = new HttpSessions();
+        HttpSession httpSession = new HttpSession();
         if (user != null && user.getPassword().equals(password)) {
-            cookie.setCookie("logined=true");
+            httpSession.setAttribute("login", "true");
+            httpSessions.setSingleHttpSession(httpSession);
+            cookie.setCookie("JSESSIONID=" + httpSession.getId());
             return "/index.html";
         }
-        cookie.setCookie("logined=false");
+        httpSession.setAttribute("login", "false");
+        httpSessions.setSingleHttpSession(httpSession);
+        cookie.setCookie("JSESSIONID=" + httpSession.getId());
         return "/user/login_failed.html";
     }
 }

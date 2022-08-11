@@ -1,6 +1,10 @@
 package webserver.controller;
 
+import cookie.Cookie;
 import db.DataBase;
+import org.checkerframework.checker.units.qual.C;
+import webserver.http.model.httpSession.HttpSession;
+import webserver.http.model.httpSession.HttpSessions;
 import webserver.http.model.request.HttpRequest;
 import webserver.http.model.response.HttpResponse;
 import webserver.http.model.response.Model;
@@ -25,6 +29,10 @@ public class ListUserController extends AbstractController {
     }
 
     public boolean isLogin(HttpRequest httpRequest) {
-        return ControllerEnum.accessiblePagesAfterLogin(httpRequest) && "logined=true".equals(httpRequest.getRequestHeaders().get("Cookie"));
+        String jsessionid = httpRequest.getHeader("JSESSIONID");
+        HttpSessions httpSessions = new HttpSessions();
+        HttpSession httpSession = httpSessions.getHttpSessionMap().get(jsessionid);
+        String loginResult = (String) httpSession.getAttribute("login");
+        return "true".equals(loginResult);
     }
 }

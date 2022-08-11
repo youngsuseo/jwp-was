@@ -1,4 +1,4 @@
-package webserver.http.model;
+package webserver.controller;
 
 import webserver.controller.Controller;
 import webserver.controller.CreateUserController;

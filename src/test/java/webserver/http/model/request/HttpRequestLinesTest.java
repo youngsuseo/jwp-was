@@ -4,9 +4,15 @@ import exception.IllegalHttpRequestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 import static org.assertj.core.api.Assertions.*;
 
 class HttpRequestLinesTest {
+    private final String testDirectory = "./src/test/resources/";
 
     @DisplayName("httpRequest 값이 null이 전달되었을 때 IllegalArgumentException이 발생합니다.")
     @Test
@@ -24,6 +30,22 @@ class HttpRequestLinesTest {
 
     @DisplayName("httpRequest로 전달 받은 문자열을 줄바꿈 기준으로 나누어 requestLine, requestHeader, requestBody로 나누어 설정합니다.")
     @Test
+    void construct_GET() {
+        String httpRequestText = "GET /user/create HTTP/1.1\n" +
+                "Host: localhost:8080\n" +
+                "Connection: keep-alive\n" +
+                "Content-Length: 59\n" +
+                "Content-Type: application/x-www-form-urlencoded\n" +
+                "Accept: */*\n";
+        HttpRequestLines httpRequestLines = new HttpRequestLines(httpRequestText);
+
+        assertThat(httpRequestLines.requestLine()).isNotNull();
+        assertThat(httpRequestLines.requestHeader()).hasSize(5);
+        assertThat(httpRequestLines.requestBody()).isNull();
+    }
+
+    @DisplayName("httpRequest로 전달 받은 문자열을 줄바꿈 기준으로 나누어 requestLine, requestHeader, requestBody로 나누어 설정합니다.")
+    @Test
     void construct() {
         String httpRequestText = "POST /user/create HTTP/1.1\n" +
                 "Host: localhost:8080\n" +
@@ -36,6 +58,28 @@ class HttpRequestLinesTest {
         HttpRequestLines httpRequestLines = new HttpRequestLines(httpRequestText);
 
         assertThat(httpRequestLines.requestLine()).isNotNull();
+        assertThat(httpRequestLines.requestHeader()).hasSize(5);
+        assertThat(httpRequestLines.requestBody()).hasSize(1);
+    }
+
+    @DisplayName("inputStream으로 GET 전송 요청 데이터를 읽어 httpRequestLines 객체를 생성한다.")
+    @Test
+    void construct_forInputStream_GET() throws IOException {
+        InputStream in = new FileInputStream(testDirectory + "Http_GET.txt");
+        HttpRequestLines httpRequestLines = new HttpRequestLines(in);
+
+        assertThat(httpRequestLines.requestLine()).isEqualTo("GET /user/create?userId=javajigi&password=password&name=JaeSung HTTP/1.1");
+        assertThat(httpRequestLines.requestHeader()).hasSize(3);
+        assertThat(httpRequestLines.requestBody()).isNull();
+    }
+
+    @DisplayName("inputStream으로 POST 전송 요청 데이터를 읽어 httpRequestLines 객체를 생성한다.")
+    @Test
+    void construct_forInputStream_POST() throws IOException {
+        InputStream in = new FileInputStream(testDirectory + "Http_POST.txt");
+        HttpRequestLines httpRequestLines = new HttpRequestLines(in);
+
+        assertThat(httpRequestLines.requestLine()).isEqualTo("POST /user/create HTTP/1.1");
         assertThat(httpRequestLines.requestHeader()).hasSize(5);
         assertThat(httpRequestLines.requestBody()).hasSize(1);
     }

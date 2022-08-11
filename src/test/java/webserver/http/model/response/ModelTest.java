@@ -1,6 +1,7 @@
-package webserver.http.model;
+package webserver.http.model.response;
 
 import org.junit.jupiter.api.Test;
+import webserver.http.model.response.Model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

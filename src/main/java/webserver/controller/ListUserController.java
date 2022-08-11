@@ -1,7 +1,7 @@
 package webserver.controller;
 
 import db.DataBase;
-import webserver.http.model.Model;
+import webserver.http.model.response.Model;
 import webserver.http.model.request.HttpRequest;
 import webserver.http.model.response.HttpResponse;
 

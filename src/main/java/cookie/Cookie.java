@@ -15,11 +15,11 @@ public class Cookie {
         return cookie != null && !cookie.isBlank();
     }
 
-    public void setCookie(String cookie) {
+    public static void setCookie(String cookie) {
         Cookie.cookie = cookie;
     }
 
-    public String getCookie() {
+    public static String getCookie() {
         return cookie;
     }
 }

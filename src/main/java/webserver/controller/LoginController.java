@@ -22,18 +22,16 @@ public class LoginController extends AbstractController {
     }
 
     private String pathAfterLogin(String password, User user) {
-        Cookie cookie = new Cookie();
-        HttpSessions httpSessions = new HttpSessions();
         HttpSession httpSession = new HttpSession();
         if (user != null && user.getPassword().equals(password)) {
             httpSession.setAttribute("login", "true");
-            httpSessions.setSingleHttpSession(httpSession);
-            cookie.setCookie("JSESSIONID=" + httpSession.getId());
+            HttpSessions.setSingleHttpSession(httpSession);
+            Cookie.setCookie("JSESSIONID=" + httpSession.getId());
             return "/index.html";
         }
         httpSession.setAttribute("login", "false");
-        httpSessions.setSingleHttpSession(httpSession);
-        cookie.setCookie("JSESSIONID=" + httpSession.getId());
+        HttpSessions.setSingleHttpSession(httpSession);
+        Cookie.setCookie("JSESSIONID=" + httpSession.getId());
         return "/user/login_failed.html";
     }
 }

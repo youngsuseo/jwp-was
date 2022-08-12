@@ -1,30 +1,23 @@
 package webserver.http.model.httpSession;
 
+import com.google.common.collect.Maps;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class HttpSessions {
-    private Map<String, HttpSession> httpSessionMap;
+    private static Map<String, HttpSession> httpSessionMap = Maps.newHashMap();
 
-    public HttpSessions() {
-        this(new HashMap<>());
+    public static void create(HttpSession httpSession) {
+        httpSessionMap.put(UUID.randomUUID().toString(), httpSession);
     }
 
-    public HttpSessions(Map<String, HttpSession> httpSessionMap) {
-        this.httpSessionMap = httpSessionMap;
-    }
-
-    public void create(HttpSession httpSession) {
-        String uuid = UUID.randomUUID().toString();
-        httpSessionMap.put(uuid, httpSession);
-    }
-
-    public Map<String, HttpSession> getHttpSessionMap() {
+    public static Map<String, HttpSession> getHttpSessionMap() {
         return httpSessionMap;
     }
 
-    public void setSingleHttpSession(HttpSession httpSession) {
-        this.httpSessionMap.put(httpSession.getId(), httpSession);
+    public static void setSingleHttpSession(HttpSession httpSession) {
+        httpSessionMap.put(httpSession.getId(), httpSession);
     }
 }

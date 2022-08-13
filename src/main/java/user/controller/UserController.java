@@ -3,7 +3,7 @@ package user.controller;
 import webserver.http.model.response.Cookie;
 import db.DataBase;
 import model.User;
-import webserver.http.model.Model;
+import webserver.http.model.response.Model;
 import webserver.http.model.request.HttpRequest;
 
 import java.util.HashMap;

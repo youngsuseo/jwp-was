@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class HttpRequest {
 
-    private final RequestLine requestLine;
-    private final RequestHeaders requestHeaders;
+    private RequestLine requestLine;
+    private RequestHeaders requestHeaders;
     private RequestBody requestBody;
 
     public HttpRequest(InputStream inputStream) throws IOException {
@@ -36,18 +36,22 @@ public class HttpRequest {
 
     public HttpRequest(String httpRequestText) {
         HttpRequestLines httpRequestLines = new HttpRequestLines(httpRequestText);
-        this.requestLine = new RequestLine(httpRequestLines.requestLine());
-        this.requestHeaders = new RequestHeaders(httpRequestLines.requestHeader());
-        this.requestBody = RequestBody.empty();
-        if (HttpMethod.isPost(requestLine.getMethod())) {
-            this.requestBody = new RequestBody(httpRequestLines.requestBody());
-        }
+        initial(httpRequestLines);
     }
 
     public HttpRequest(RequestLine requestLine, RequestHeaders requestHeaders, RequestBody requestBody) {
         this.requestLine = requestLine;
         this.requestHeaders = requestHeaders;
         this.requestBody = requestBody;
+    }
+
+    private void initial(HttpRequestLines httpRequestLines) {
+        this.requestLine = new RequestLine(httpRequestLines.requestLine());
+        this.requestHeaders = new RequestHeaders(httpRequestLines.requestHeader());
+        this.requestBody = RequestBody.empty();
+        if (HttpMethod.isPost(requestLine.getMethod())) {
+            this.requestBody = new RequestBody(httpRequestLines.requestBody());
+        }
     }
 
     public HttpMethod getMethod() {

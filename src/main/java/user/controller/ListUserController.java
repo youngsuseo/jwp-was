@@ -1,9 +1,11 @@
 package user.controller;
 
 import user.service.RetrieveUserService;
-import webserver.http.model.Model;
+import webserver.http.model.session.HttpSession;
+import webserver.http.model.session.HttpSessions;
 import webserver.http.model.request.HttpRequest;
 import webserver.http.model.response.HttpResponse;
+import webserver.http.model.response.Model;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,19 +15,39 @@ public class ListUserController extends AbstractController {
 
     @Override
     public void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
-        Model model;
+        httpResponse.movePage(dispatch(httpRequest));
+    }
+
+    private Model dispatch(HttpRequest httpRequest) {
         if (isLogin(httpRequest)) {
             Map<String, Object> modelMap = new HashMap<>();
             modelMap.put("users", RetrieveUserService.retrieveUsers());
-            model = new Model("user/list", modelMap);
-        } else {
-            model = new Model("/user/login.html", null);
+            return new Model("user/list", modelMap);
         }
-        httpResponse.movePage(model);
+        return new Model("/user/login.html", null);
     }
 
-    public boolean isLogin(HttpRequest httpRequest) {
-        return ControllerEnum.accessiblePagesAfterLogin(httpRequest) && "logined=true".equals(httpRequest.getRequestHeaders().get("Cookie"));
+    private boolean isLogin(HttpRequest httpRequest) {
+        boolean accessiblePagesAfterLogin = ControllerEnum.accessiblePagesAfterLogin(httpRequest);
+
+        String cookie = httpRequest.getHeader("Cookie");
+        if (cookie == null) {
+            return false;
+        }
+
+        String[] split = cookie.split("=");
+        if (split.length < 2) {
+            return false;
+        }
+
+        if (!split[0].equals("JSESSIONID")) {
+            return false;
+        }
+
+        String jsessionid = split[1];
+        HttpSession httpSession = HttpSessions.getHttpSessionMap().get(jsessionid);
+        String loginResult = (String) httpSession.getAttribute("login");
+        return "true".equals(loginResult);
     }
 
     @Override

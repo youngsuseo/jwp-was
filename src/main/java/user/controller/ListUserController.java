@@ -46,6 +46,9 @@ public class ListUserController extends AbstractController {
 
         String jsessionid = split[1];
         HttpSession httpSession = HttpSessions.getHttpSessionMap().get(jsessionid);
+        if (httpSession == null) {
+            return false;
+        }
         String loginResult = (String) httpSession.getAttribute("login");
         return "true".equals(loginResult);
     }
